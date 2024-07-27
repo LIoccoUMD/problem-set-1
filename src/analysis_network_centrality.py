@@ -67,5 +67,6 @@ def main():
     save_to_csv(centrality_df, output_filename)
     print(f"Centrality metrics saved to {output_filename}")
 
+# copied from main.py
 if __name__ == "__main__":
     main()
