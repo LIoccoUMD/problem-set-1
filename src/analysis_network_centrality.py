@@ -1,72 +1,57 @@
-import json
+'''
+PART 1: NETWORK CENTRALITY METRICS
+
+Using the imbd_movies dataset
+- Guild a graph and perform some rudimentary graph analysis, extracting centrality metrics from it. 
+- Below is some basic code scaffolding that you will need to add to. 
+- Tailor this code scaffolding and its stucture to however works to answer the problem
+- Make sure the code is line with the standards we're using in this class 
+'''
+
+import numpy as np
 import pandas as pd
 import networkx as nx
-import requests
-from datetime import datetime
+import json
 
-def download_data(url: str, filename: str):
-    """Download and save the JSON data from the specified URL."""
-    response = requests.get(url)
-    with open(filename, 'w') as f:
-        f.write(response.text)
+# Build the graph
+g = nx.Graph()
 
-def build_graph(data: list) -> nx.Graph:
-    """Build a graph from the JSON data."""
-    g = nx.Graph()
-    for line in data:
+# Set up your dataframe(s) -> the df that's output to a CSV should include at least the columns 'left_actor_name', '<->', 'right_actor_name'
+
+
+with open() as in_file:
+    # Don't forget to comment your code
+    for line in in_file:
+        # Don't forget to include docstrings for all functions
+
+        # Load the movie from this line
         this_movie = json.loads(line)
-        actors = this_movie.get('actors', [])
-        for actor_id, actor_name in actors:
-            g.add_node(actor_id, name=actor_name)
+            
+        # Create a node for every actor
+        for actor_id,actor_name in this_movie['actors']:
+        # add the actor to the graph    
+        # Iterate through the list of actors, generating all pairs
+        ## Starting with the first actor in the list, generate pairs with all subsequent actors
+        ## then continue to second actor in the list and repeat
         
-        for i, (left_actor_id, left_actor_name) in enumerate(actors):
-            for right_actor_id, right_actor_name in actors[i+1:]:
-                if g.has_edge(left_actor_id, right_actor_id):
-                    g[left_actor_id][right_actor_id]['weight'] += 1
-                else:
-                    g.add_edge(left_actor_id, right_actor_id, weight=1)
-    return g
+        i = 0 #counter
+        for left_actor_id,left_actor_name in this_movie['actors']:
+            for right_actor_id,right_actor_name in this_movie['actors'][i+1:]:
 
-def calculate_centrality(g: nx.Graph) -> pd.DataFrame:
-    """Calculate centrality metrics for the graph and return as a DataFrame."""
-    degree_centrality = nx.degree_centrality(g)
-    centrality_df = pd.DataFrame.from_dict(degree_centrality, orient='index', columns=['degree_centrality'])
-    return centrality_df
+                # Get the current weight, if it exists
+                
+                
+                # Add an edge for these actors
+                
+                
+                
+            i += 1 
 
-def save_to_csv(df: pd.DataFrame, filename: str):
-    """Save the DataFrame to a CSV file."""
-    df.to_csv(filename, index_label='actor_id')
 
-def main():
-    url = "https://github.com/cbuntain/umd.inst414/blob/main/data/imdb_movies_2000to2022.prolific.json?raw=true"
-    filename = "imdb_movies_2000to2022.json"
-    
-    # Download the data if not already downloaded
-    download_data(url, filename)
-    
-    # Load data from the JSON file
-    with open(filename, 'r') as f:
-        data = f.readlines()
+# Print the info below
+print("Nodes:", len(g.nodes))
 
-    # Build the graph
-    g = build_graph(data)
-    
-    # Print graph info
-    print("Nodes:", len(g.nodes))
-    print("Edges:", len(g.edges))
-    
-    # Calculate and print the 10 most central nodes
-    centrality_df = calculate_centrality(g)
-    top_10_central = centrality_df.sort_values(by='degree_centrality', ascending=False).head(10)
-    print("Top 10 most central nodes:")
-    print(top_10_central)
-    
-    # Save the final DataFrame to a CSV file
-    current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_filename = f"network_centrality_{current_datetime}.csv"
-    save_to_csv(centrality_df, output_filename)
-    print(f"Centrality metrics saved to {output_filename}")
+#Print the 10 the most central nodes
 
-# copied from main.py
-if __name__ == "__main__":
-    main()
+
+# Output the final dataframe to a CSV named 'network_centrality_{current_datetime}.csv' to `/data`
