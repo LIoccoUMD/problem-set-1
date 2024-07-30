@@ -80,7 +80,6 @@ def perform_analysis(data):
     
     save_to_csv(similar_actors, query_actor)
     
-    # Additional print statement for Euclidean distance (if needed)
     dist = DistanceMetric.get_metric('euclidean')
     euclidean_distances = dist.pairwise(feature_matrix)
     euclidean_distances_df = pd.DataFrame(euclidean_distances, index=feature_matrix.index, columns=feature_matrix.index)
@@ -88,3 +87,15 @@ def perform_analysis(data):
     
     print(f"Top 10 actors most similar to {query_actor} based on Euclidean distance:")
     print(top_10_euclidean)
+    
+    # How the list changes based on Euclidean distance
+    print("\nComparison of Cosine Similarity and Euclidean Distance results:")
+    cosine_list = set(similar_actors.index)
+    euclidean_list = set(top_10_euclidean.index)
+    
+    only_cosine = cosine_list - euclidean_list
+    only_euclidean = euclidean_list - cosine_list
+    
+    print(f"Actors only in Cosine Similarity list: {only_cosine}")
+    print(f"Actors only in Euclidean Distance list: {only_euclidean}")
+    print(f"Common actors in both lists: {cosine_list & euclidean_list}")
